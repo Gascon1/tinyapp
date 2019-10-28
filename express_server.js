@@ -9,7 +9,7 @@ app.set("view engine", "ejs");
 
 const generateRandomString = () => {
   return Math.random(36).toString(36).slice(2, 8);
-}
+};
 
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
@@ -32,13 +32,9 @@ app.get("/urls/:shortURL", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-  console.log(req.body);  // Log the POST request body to the console
   let shortURL = generateRandomString();
   urlDatabase[shortURL] = req.body['longURL'];
   res.redirect(`/urls/${shortURL}`);         // Respond with 'Ok' (we will replace this)
-  
-  console.log(shortURL);
-  console.log(urlDatabase);
 });
 
 app.post('/urls/:shortURL/delete', (req, res) => {
@@ -46,6 +42,10 @@ app.post('/urls/:shortURL/delete', (req, res) => {
   res.redirect('/urls');
 });
 
+app.post('/urls/:shortURL/update', (req, res) => {
+  urlDatabase[req.params.shortURL] = req.body.longURL;
+  res.redirect('/urls')
+});
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
