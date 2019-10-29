@@ -1,6 +1,6 @@
 <header>
-  <nav class="navbar navbar-expand-md navbar-dark bg-success">
-    <a class="navbar-brand" href="/urls">TinyApp</a>
+  <nav class="navbar navbar-expand-md navbar-dark" style="background-color:darkorange">
+    <a class="navbar-brand" href="/urls">tinyApp</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
       aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -10,29 +10,30 @@
         <a class="nav-item nav-link" href="/urls">My URLs</a>
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
       </div>
-      <div class="navbar-nav" style="margin: 0.5em 1em;">
+      <!-- <div class="navbar-nav" style="margin: 0.5em 1em;">
+        </div> -->
 
-        <% if (!user) { %>
-        <div class="navbar-nav"></div>
-        <form class="form-inline" action="/login" method="GET">
-          <button type="submit" class="btn btn-outline-light">Login</button>
-        </form>
       </div>
-      <div class="navbar-nav">
-        <form class="form-inline" action="/register" method="GET">
-          <button type="submit" class="btn btn-outline-light">Register</button>
-        </form>
-      </div>
-
-      <% } else { %>
-      <div>
-        <form class="form-inline" action="/logout" method="POST">
-          <span class="navbar-brand" style="margin: 0.5em 1em; text-align: right;"> <%= user.email%> </span>
-          <button type="submit" class="btn btn-outline-light">Logout</button>
-          <% } %>
-        </form>
-      </div>
+      <% if (!user) { %>
+    <div class="navbar-nav" style="margin: 0.3em 0.5em;">
+      <form class="form-inline" action="/login" method="GET">
+        <button type="submit" class="btn btn-outline-light">Sign In</button>
+      </form>
     </div>
+    <div class="navbar-nav " style="margin: 0.3em 0em 0.3em 0.5em;">
+      <form class="form-inline" action="/register" method="GET">
+        <button type="submit" class="btn btn-outline-light">Register</button>
+      </form>
+    </div>
+    </div>
+
+    <% } else { %>
+    <div>
+      <form class="form-inline" action="/logout" method="POST">
+        <span class="navbar-text" style="margin: 0.15em 0.5em;color: white;"> <%= user.email%> </span>
+        <button type="submit" class="btn btn-outline-light">Sign Out</button>
+        <% } %>
+      </form>
     </div>
   </nav>
 </header>
