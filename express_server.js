@@ -2,7 +2,10 @@ const express = require("express");
 const app = express();
 const PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
+const bcrypt = require('bcryptjs');
+const salt = bcrypt.genSaltSync(10);
+
 
 
 app.use(cookieParser());
@@ -37,10 +40,6 @@ const authenticateDeleteEdit = (userID) => {
   return false;
 }
 
-
-
-
-
 const checkUserEmail = (usersDatabase, formEmail) => {
   for (const userId in usersDatabase) {
     let email = users[userId].email
@@ -54,12 +53,14 @@ const checkUserEmail = (usersDatabase, formEmail) => {
 const checkUserPassword = (usersDatabase, formPassword) => {
   for (const userId in usersDatabase) {
     let password = users[userId].password
-    if (password === formPassword) {
+    if (bcrypt.compareSync(formPassword, password)) {
       return true;
     }
   }
   return false;
 };
+
+
 
 const urlsForUser = (id) => {
   let urlsForUserObj = {};
@@ -68,8 +69,8 @@ const urlsForUser = (id) => {
       urlsForUserObj[shortURL] = urlDatabase[shortURL]
     }
   }
-  return urlsForUserObj
-}
+  return urlsForUserObj;
+};
 
 const generateRandomString = () => {
   return Math.random(36).toString(36).slice(2, 8);
@@ -176,7 +177,7 @@ app.post('/register', (req, res) => {
     users[user_id] = {
       id: user_id,
       email: req.body.email,
-      password: req.body.password
+      password: bcrypt.hashSync(req.body.password, salt)
     }
     res.cookie("user_id", user_id);
     res.redirect('/urls');
@@ -184,7 +185,7 @@ app.post('/register', (req, res) => {
 });
 
 app.get("/urls.json", (req, res) => {
-  res.json(urlDatabase);
+  res.json(users);
 });
 
 
