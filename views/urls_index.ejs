@@ -16,7 +16,7 @@
     <% include ./partials/_header %>
   </header>
   <main style="margin: 1em;">
-    <h3>My URLs</h3>
+    <h3 style="margin: 1em 0;">My URLs</h3>
     <table class="table">
       <thead>
         <tr>
@@ -30,7 +30,7 @@
         <% for(let url in urls) { %>
         <tr>
           <td><%= url %></td>
-          <td><%= urls[url] %></td>
+          <td><%= urls[url].longURL %></td>
           <td>
             <form method="GET" action="/urls/<%= url %>"><button type="submit"
                 class="btn btn-outline-primary">Edit</button></form>
