@@ -8,7 +8,7 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
     integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-  <title>TinyApp</title>
+  <title>tinyApp</title>
 </head>
 
 <body>
@@ -29,8 +29,9 @@
       <tbody>
         <% for(let url in urls) { %>
         <tr>
-          <td><%= url %></td>
-          <td><%= urls[url].longURL %></td>
+
+          <td><a href="/u/<%= url %>"><%= url %></a></td>
+          <td><a href="<%= urls[url].longURL %>"><%= urls[url].longURL %></a></td>
           <td>
             <form method="GET" action="/urls/<%= url %>"><button type="submit"
                 class="btn btn-outline-primary">Edit</button></form>

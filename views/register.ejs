@@ -8,7 +8,7 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
     integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-  <title>TinyApp</title>
+  <title>tinyApp</title>
 </head>
 
 <body>
@@ -19,6 +19,11 @@
     <div>
       <h3 style="margin: 1em 0;">Create a new account</h3>
       <form method="POST" action="/register" style="width: 400px">
+        <div>
+          <label for="tinyAppName">Name</label>
+          <input id="tinyAppName" class="form-control" type="text" name="name" placeholder="Name"
+            style="margin: 0 auto 1em; width: 400px">
+        </div>
         <div>
           <label for="tinyAppEmail">Email address</label>
           <input id="tinyAppEmail" class="form-control" type="email" name="email" placeholder="Enter email"
