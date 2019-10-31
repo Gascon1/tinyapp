@@ -4,9 +4,9 @@ tinyApp is a full stack web application built with Node and Express that allows 
 
 ## Final Product
 
-!["Main page with all the URLs"](#)
-!["Register page"](#)
-!["Login page"](#)
+!["Main page with all the URLs"](https://github.com/Gascon1/tinyapp/blob/master/docs/urls-page.png?raw=true)
+!["Register page"](https://github.com/Gascon1/tinyapp/blob/master/docs/create-page.png?raw=true)
+!["Sign In page"](https://github.com/Gascon1/tinyapp/blob/master/docs/sign-in-page.png?raw=true)
 
 ## Dependencies
 
