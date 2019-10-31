@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const cookieSession = require('cookie-session');
 const bcrypt = require('bcryptjs');
 const salt = bcrypt.genSaltSync(10);
-const { authenticateDeleteEdit, checkUserEmail, checkUserPassword,urlsForUser, generateRandomString } = require('./helpers');
+const { authenticateDeleteEdit, checkUserEmail, checkUserPassword, urlsForUser, generateRandomString } = require('./helpers');
 const { users, urlDatabase } = require('./database');
 
 
@@ -19,7 +19,9 @@ app.use(
   }),
 );
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static('public'));
 app.set("view engine", "ejs");
+
 
 app.get("/urls/new", (req, res) => {
   if (!req.session.user_id) {
