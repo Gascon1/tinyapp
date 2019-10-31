@@ -5,7 +5,9 @@ const bodyParser = require("body-parser");
 const cookieSession = require('cookie-session');
 const bcrypt = require('bcryptjs');
 const salt = bcrypt.genSaltSync(10);
-const { authenticateDeleteEdit, checkUserEmail, checkUserPassword, urlsForUser, generateRandomString, users, urlDatabase } = require('./helpers')
+const { authenticateDeleteEdit, checkUserEmail, checkUserPassword,urlsForUser, generateRandomString } = require('./helpers');
+const { users, urlDatabase } = require('./database');
+
 
 app.use(
   cookieSession({
@@ -18,70 +20,6 @@ app.use(
 );
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
-
-// const users = {
-//   "userRandomID": {
-//     id: "userRandomID",
-//     email: "user@example.com",
-//     password: "purple-monkey-dinosaur"
-//   },
-//   "aJ48lW": {
-//     id: "aJ48lW",
-//     email: "user2@example.com",
-//     password: "dishwasher-funk"
-//   }
-// };
-
-// const urlDatabase = {
-//   i3BoGr: { longURL: "https://www.google.ca", userID: "aJ48lW" },
-//   b6UTxQ: { longURL: "https://www.tsn.ca", userID: "aJ48lW" },
-//   b6UvpO: { longURL: "https://www.ign.ca", userID: "vR51aF" }
-// };
-
-
-// const authenticateDeleteEdit = (userID) => {
-//   for (let shortURL in urlDatabase) {
-//     if (userID === urlDatabase[shortURL].userID) {
-//       return true;
-//     }
-//   }
-//   return false;
-// };
-
-// const checkUserEmail = (usersDatabase, formEmail) => {
-//   for (const userId in usersDatabase) {
-//     let email = users[userId].email;
-//     if (email === formEmail) {
-//       return true;
-//     }
-//   }
-//   return false;
-// };
-
-// const checkUserPassword = (usersDatabase, formPassword) => {
-//   for (const userId in usersDatabase) {
-//     let password = users[userId].password;
-//     if (bcrypt.compareSync(formPassword, password)) {
-//       return true;
-//     }
-//   }
-//   return false;
-// };
-
-// const urlsForUser = (id) => {
-//   let urlsForUserObj = {};
-//   for (let shortURL in urlDatabase) {
-//     if (urlDatabase[shortURL].userID === id) {
-//       urlsForUserObj[shortURL] = urlDatabase[shortURL];
-//     }
-//   }
-//   return urlsForUserObj;
-// };
-
-// const generateRandomString = () => {
-//   return Math.random(36).toString(36).slice(2, 8);
-// };
-
 
 app.get("/urls/new", (req, res) => {
   if (!req.session.user_id) {
@@ -97,7 +35,7 @@ app.get("/urls/new", (req, res) => {
 app.get('/urls', (req, res) => {
   let templateVars = {
     urls: urlsForUser(req.session.user_id),
-    user: users[req.session.user_id]
+    user: users[req.session.user_id],
   };
   res.render('urls_index', templateVars);
 });
@@ -171,7 +109,6 @@ app.post('/logout', (req, res) => {
 });
 
 app.post('/register', (req, res) => {
-  //refactor : make this in another function
   let user_id = generateRandomString();
   if (req.body.email === '' || req.body.password === '') {
     res.status(400);
