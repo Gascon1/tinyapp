@@ -42,6 +42,10 @@ app.get('/urls', (req, res) => {
   res.render('urls_index', templateVars);
 });
 
+app.get('/', (req, res) => {
+  res.redirect('/urls');
+});
+
 app.get('/register', (req, res) => {
   let templateVars = { user: users[req.session.user_id] };
   res.render('register', templateVars);
@@ -68,20 +72,37 @@ app.post("/urls", (req, res) => {
   res.redirect(`/urls`);
 });
 
-app.post('/urls/:shortURL/delete', (req, res) => {
+/**
+ * this post deletes a short URL from the user's account. Only the logged in user 
+ * can delete his own short URLs.
+*/
+ app.post('/urls/:shortURL/delete', (req, res) => {
+   if (authenticateDeleteEdit(req.session.user_id)) {
+     delete urlDatabase[req.params.shortURL];
+     res.redirect('/urls');
+    } else {
+      res.redirect('/login');
+    }
+  });
+
+/**
+ * this post updates a short URL from the user's account. Only the logged in user 
+ * can update his own short URLs.
+*/
+app.post('/urls/:shortURL/update', (req, res) => {
   if (authenticateDeleteEdit(req.session.user_id)) {
-    delete urlDatabase[req.params.shortURL];
+    urlDatabase[req.params.shortURL].longURL = req.body.longURL;
     res.redirect('/urls');
   } else {
-    res.redirect('/login');
   }
 });
 
-app.post('/urls/:shortURL/update', (req, res) => {
-  urlDatabase[req.params.shortURL].longURL = req.body.longURL;
-  res.redirect('/urls');
-});
-
+/**
+ * When a user attempts to log in, I first check if the fields are empty.
+ * Then, i check if the email is in the database. Then, I check if the password
+ * is valid. If all of those check out, the user is then looged in and redirected 
+ * to /urls.
+*/
 app.post('/login', (req, res) => {
   if (req.body.email === '' || req.body.password === '') {
     res.status(400);
@@ -104,17 +125,17 @@ app.post('/login', (req, res) => {
   }
 });
 
-app.post('/logout', (req, res) => {
-  req.session.sig = null;
-  req.session = null;
-  res.redirect('/urls');
-});
-
+/**
+ * When a user registers, a randomly generated user_id is assigned to him.
+ * Much like the login, I first check if one of the registration fields
+ * are empty. Then, I check if the user already has an account. If both of 
+ * these check out, the user is registered, logged in, and is redirected to /urls
+*/
 app.post('/register', (req, res) => {
   let user_id = generateRandomString();
-  if (req.body.email === '' || req.body.password === '') {
+  if (req.body.email === '' || req.body.password === '' || req.body.name === '') {
     res.status(400);
-    res.send(`${res.statusCode} Please enter a valid email or password`);
+    res.send(`${res.statusCode} Please make sure you enter a name, email and password`);
   } else if (checkUserEmail(users, req.body.email)) {
     res.status(400);
     res.send(`${res.statusCode} Seems like you already have an account, please login!`);
@@ -128,6 +149,12 @@ app.post('/register', (req, res) => {
     req.session.user_id = user_id;
     res.redirect('/urls');
   }
+});
+
+app.post('/logout', (req, res) => {
+  req.session.sig = null;
+  req.session = null;
+  res.redirect('/urls');
 });
 
 app.listen(PORT, () => {
