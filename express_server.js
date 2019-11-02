@@ -35,11 +35,11 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.get('/urls', (req, res) => {
-  let templateVars = {
-    urls: urlsForUser(req.session.user_id),
-    user: users[req.session.user_id],
-  };
-  res.render('urls_index', templateVars);
+    let templateVars = {
+      urls: urlsForUser(req.session.user_id),
+      user: users[req.session.user_id],
+    };
+    res.render('urls_index', templateVars);
 });
 
 app.get('/', (req, res) => {
@@ -76,14 +76,14 @@ app.post("/urls", (req, res) => {
  * this post deletes a short URL from the user's account. Only the logged in user 
  * can delete his own short URLs.
 */
- app.post('/urls/:shortURL/delete', (req, res) => {
-   if (authenticateDeleteEdit(req.session.user_id)) {
-     delete urlDatabase[req.params.shortURL];
-     res.redirect('/urls');
-    } else {
-      res.redirect('/login');
-    }
-  });
+app.post('/urls/:shortURL/delete', (req, res) => {
+  if (authenticateDeleteEdit(req.session.user_id)) {
+    delete urlDatabase[req.params.shortURL];
+    res.redirect('/urls');
+  } else {
+    res.redirect('/login');
+  }
+});
 
 /**
  * this post updates a short URL from the user's account. Only the logged in user 
@@ -94,6 +94,7 @@ app.post('/urls/:shortURL/update', (req, res) => {
     urlDatabase[req.params.shortURL].longURL = req.body.longURL;
     res.redirect('/urls');
   } else {
+    res.redirect('/login');
   }
 });
 
