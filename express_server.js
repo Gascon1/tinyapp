@@ -35,11 +35,11 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.get('/urls', (req, res) => {
-    let templateVars = {
-      urls: urlsForUser(req.session.user_id),
-      user: users[req.session.user_id],
-    };
-    res.render('urls_index', templateVars);
+  let templateVars = {
+    urls: urlsForUser(req.session.user_id),
+    user: users[req.session.user_id],
+  };
+  res.render('urls_index', templateVars);
 });
 
 app.get('/', (req, res) => {
@@ -57,8 +57,12 @@ app.get('/login', (req, res) => {
 });
 
 app.get("/urls/:shortURL", (req, res) => {
-  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL].longURL, user: users[req.session.user_id] };
-  res.render("urls_show", templateVars);
+  if (!req.session.user_id) {
+    res.redirect('/login');
+  } else {
+    let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL].longURL, user: users[req.session.user_id] };
+    res.render("urls_show", templateVars);
+  }
 });
 
 app.get('/u/:shortURL', (req, res) => {
